@@ -1,0 +1,97 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Ribaldrhino.github.io : ">
+    <title>Ribaldrhino.github.io</title>
+</head>
+
+<body>
+<h1>Metody sztucznej inteligencji</h1>
+<h1>Dawid Romanowski</h1>
+<h1>Robot NAO</h1>
+<p>
+    <h2>Wprowadzenie</h2>
+        Celem zadanie było przygotowanie i zaprogramowanie prostych komponentów z wykorzystaniem dostępnych bloków oraz przygotowanie i zaprogramowanie własnych bloków w języku Python
+        w celu sterowania zachowanie robota NAO.
+</p>
+<p>
+    <h2>Prezentacja</h2>
+        Utworzone przeze mnie komponenty sprawiają, że robot ćwiczy brzuszki i przysiady przesuwając się między ćwiczeniami na odpowiednie stacje.
+
+    <div>
+        <video width="320" height="240" controls>
+            <source src="content/videos/nao.ogv" type="video/ogg">
+        </video>
+    </div>
+    <div>
+        <img src="content/images/nao.png" />
+    </div>
+</p>
+<p>
+    <h2>Wykonanie</h2>
+    <div>
+        <h3>Zaplanowana sekwencja</h3>
+        <ol>
+            <li>Robot losuje czy zacząć od brzuszków czy od przysiadów</li>
+            <li>Robot wykonuje 5 powtórzeń ćwiczenia</li>
+            <li>Robot ociera czoło z potu</li>
+            <li>Robot przechodzi na kolejną stację</li>
+            <li>Robot zaczyna wykonywać kolejne ćwiczenie</li>
+        </ol>
+    </div>
+    <div>
+        <h3>Opis wykonania</h3>
+        <div>
+            <h4>Generowanie liczby losowej i switch na jej podstawie</h4>
+            Wstawiłem element typu script i dodałem następujący kod:
+            <pre><code>
+                def onInput_onStart(self):
+                  nMax = 1
+                  nMin = 0
+                  self.output_RandomValue( random.randint( nMin, nMax ) )
+            </code></pre>
+
+            Sprawia to, że na wyjście tego scryptu idzie wartość 0 lub 1 i w nasępnym kroku podpinam do niej switch-case'e i losuję ćwiczenie.
+        </div>
+        <div>
+            <h4>Instrukcja for</h4>
+            Aby wykonać pewne ćwiczenie określoną ilość razy wykorzystujemy instrukcję for.
+            Można ustalić parametry definiujące sposób zapętlania naciskając naciskając na nią prawym przyciskiem myszy i dająć "set parameters".
+            <div>
+                <img src="content/images/nao.png" />
+            </div>
+        </div>
+        <div>
+            <h4>Timeline</h4>
+            Timeline służy do precyzyjnego definiowania kluczowych pozycji w których ma się znaleźć nasz robot. Definiujemy "klatki" i pozycje pomiędzy są interpolowane.
+            Przykład przedstawia dwie klatki z animacji schodzenia do przysiadu robota.
+            <span>
+                <img src="content/images/frame1.png" height="500" width="600"/>
+                <img src="content/images/frame2.png" height="500" width="600"/>
+            </span>
+        </div>
+        <div>
+            <h4>Chodzenie między stacjami</h4>
+            Do chodzenia między stacjami wykorzystałem prosty skrypt:
+            <pre><code>
+            def onInput_onStart(self):
+                motion = ALProxy("ALMotion")
+                posture = ALProxy("ALRobotPosture")
+                posture.goToPosture("StandInit", 0.5)
+                motion.walkTo(0.5, 0.0, 0.0)
+                motion.waitUntilWalkIsFinished()
+                self.onStopped()
+            </code></pre>
+            Robot przechodzi dzięki niemu z obecnej pozycji do pozycji (0.5, 0.0, 0.0).
+        </div>
+
+    </div>
+</p>
+
+</body>
+</html>
